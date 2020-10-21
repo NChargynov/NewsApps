@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/everything"
+        android:icon="@drawable/ic_everything"
+        android:title="Everything"/>
+
+    <item
+        android:icon="@drawable/ic_top_headlines"
+        android:id="@+id/topHeadlines"
+        android:title="Top Headlines"/>
+
+</menu>

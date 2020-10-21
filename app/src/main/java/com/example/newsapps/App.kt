@@ -1,17 +1,19 @@
 package com.example.newsapps
 
 import android.app.Application
+import com.example.newsapps.di.newsModule
 import com.example.newsapps.network.NewsApi
 import com.example.newsapps.network.RetrofitClient
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application(){
 
-    val retrofitClient = RetrofitClient()
-
-    fun provideNews() = retrofitClient.provideRetrofit.create(NewsApi::class.java)
-
     override fun onCreate() {
         super.onCreate()
-        provideNews()
+        startKoin {
+            androidContext(this@App)
+            modules(newsModule)
+        }
     }
 }

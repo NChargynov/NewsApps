@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitClient() {
+class RetrofitClient {
 
     private val BASE_URL = "https://newsapi.org/"
 
@@ -30,5 +30,5 @@ class RetrofitClient() {
         .client(okHttpClient)
         .build()
 
-    fun provideNews() = provideRetrofit.create(NewsApi::class.java)
+    fun provideNews(): NewsApi = provideRetrofit.create(NewsApi::class.java)
 }

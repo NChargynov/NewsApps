@@ -11,4 +11,10 @@
         android:id="@+id/topHeadlines"
         android:title="Top Headlines"/>
 
+     <item
+        android:icon="@drawable/ic_favorites"
+        android:id="@+id/favorites"
+        android:title="Favorites"/>
+
+
 </menu>

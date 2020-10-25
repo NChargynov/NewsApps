@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.details.DetailsActivity"></activity>
+        <activity android:name=".CoroutinesExampleActivity"></activity>
+        <activity android:name=".ui.details.DetailsActivity" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
@@ -26,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.news.NewsActivity"></activity>
+        <activity android:name=".ui.news.NewsActivity" />
     </application>
 
 </manifest>

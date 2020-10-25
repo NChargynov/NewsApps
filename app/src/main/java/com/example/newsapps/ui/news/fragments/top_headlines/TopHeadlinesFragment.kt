@@ -1,4 +1,4 @@
-package com.example.newsapps.ui.news.top_headlines
+package com.example.newsapps.ui.news.fragments.top_headlines
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager

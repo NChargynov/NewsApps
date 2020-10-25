@@ -1,4 +1,4 @@
-package com.example.newsapps.ui.news.everything
+package com.example.newsapps.ui.news.fragments.everything
 import android.view.*
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -106,7 +106,6 @@ class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everyth
         DetailsActivity.instanceActivity(activity, item)
     }
 }
-
 //        nestedScroll.setOnScrollChangeListener(
 //            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
 //                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
@@ -123,4 +122,3 @@ class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everyth
 //                    }
 //                }
 //            })
-

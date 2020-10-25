@@ -29,4 +29,8 @@ class NewsViewModel(private val newsRepository: NewsRepository) : BaseViewModel(
         page += 1
         return newsRepository.getNewsTopHeadlines(page)
     }
+
+    fun insertFavoriteNew(article: Article){
+        newsRepository.insertFavoriteArticle(article)
+    }
 }

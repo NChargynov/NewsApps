@@ -1,4 +1,4 @@
-package com.example.newsapps.ui.news.fragments.top_headlines
+    package com.example.newsapps.ui.news.fragments.top_headlines
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +12,6 @@ import com.example.newsapps.ui.details.DetailsActivity
 import com.example.newsapps.ui.news.NewsViewModel
 import com.example.newsapps.ui.news.adapter.NewsAdapter
 import kotlinx.android.synthetic.main.fragment_topheadlines.*
-import kotlinx.android.synthetic.main.fragment_everything.progressBarDown
-import kotlinx.android.synthetic.main.fragment_everything.progressCircular
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopHeadlinesFragment : BaseFragment<NewsViewModel>(R.layout.fragment_topheadlines), NewsAdapter.OnItemClick {
@@ -34,20 +32,23 @@ class TopHeadlinesFragment : BaseFragment<NewsViewModel>(R.layout.fragment_tophe
 
     override fun setUpListeners() {
         nestedScrollListener()
+        swipeListener()
     }
 
     private fun subscribeToTopHeadlines() {
         viewModel.getNewsTopHeadlines().observe(viewLifecycleOwner, {
             when (it.status) {
-                Status.SUCCESS -> {
-                    list.addAll(it.data!!.articles)
-                    newsAdapter.notifyDataSetChanged()
-                    progressVisibilityGone()
-                }
+                Status.SUCCESS -> setTable(it.data!!.articles)
                 Status.ERROR -> showToast(context!!, it.message.toString())
                 Status.LOADING -> showToast(context!!, "Данные загружаются")
             }
         })
+    }
+
+    private fun setTable(articles: MutableList<Article>) {
+        list.addAll(articles)
+        newsAdapter.notifyDataSetChanged()
+        progressVisibilityGone()
     }
 
     private fun createRecycler() {
@@ -64,12 +65,20 @@ class TopHeadlinesFragment : BaseFragment<NewsViewModel>(R.layout.fragment_tophe
     }
 
     private fun progressVisibilityGone() {
-        progressBarDown.visibility = View.GONE
         progressCircular.visibility = View.GONE
     }
 
     override fun onItemClick(item: Article) {
         DetailsActivity.instanceActivity(activity, item)
+    }
+
+    private fun swipeListener(){
+        swipeUp.setOnRefreshListener {
+            list.clear()
+            subscribeToTopHeadlines()
+            showToast(context!!, "Данные успешно обновлены")
+            swipeUp.isRefreshing = false
+        }
     }
 
     private fun nestedScrollListener() {

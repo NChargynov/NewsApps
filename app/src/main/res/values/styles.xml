@@ -11,4 +11,10 @@
         <item name="android:windowBackground">@drawable/bg_splash_screen_theme</item>
     </style>
 
+    <style name="NewsActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>

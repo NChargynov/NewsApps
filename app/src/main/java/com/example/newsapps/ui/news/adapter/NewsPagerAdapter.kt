@@ -22,5 +22,4 @@ class NewsPagerAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAda
             else -> EverythingFragment()
         }
     }
-
 }

@@ -1,4 +1,5 @@
 package com.example.newsapps.repository
+
 import androidx.lifecycle.liveData
 import com.example.newsapps.Constants.apiKey
 import com.example.newsapps.db.NewsDataBase
@@ -10,40 +11,59 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class NewsRepository(private val api: NewsApi, val db: NewsDataBase) {
+class NewsRepository(private val api: NewsApi, private val db: NewsDataBase) {
 
     private val everyThingDefaultSize = 10
     private val ru = "ru"
 
-    fun getEverything(query: String?, page: Int) = liveData(Dispatchers.IO){
+    fun getEverything(query: String?, page: Int) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
-        try{
+        try {
             val result = api.getEverything(query, apiKey, everyThingDefaultSize, page)
             emit(Resource.success(data = result))
-            result.articles.let { db.newsDao().insertAllArticle(it) }
+            result.articles.let { db.newsDao().insertAllArticles(it) }
 //            db.newsDao().insertAllArticle(result.articles)
-        } catch (exception: Exception){
+        } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 
-    fun insertFavoriteArticle(article: Article){
+    fun insertFavoriteArticle(article: Article) {
         CoroutineScope(Dispatchers.IO).launch {
             article.isFavorite = true
             db.newsDao().insertArticle(article)
         }
     }
 
+    fun getAllArticles() = liveData(Dispatchers.IO){
+        emit(db.newsDao().getAllArticles())
+    }
+
     fun getFavoritesArticles() = liveData(Dispatchers.IO) {
         emit(db.newsDao().getFavoriteArticles())
     }
 
-    fun getNewsTopHeadlines(page: Int) = liveData(Dispatchers.IO){
+    fun getNewsTopHeadlines(page: Int) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = api.getNewsTopHeadlines(ru, apiKey, page, everyThingDefaultSize)))
-        } catch (exception: Exception){
+            val result = api.getNewsTopHeadlines(ru, apiKey, page, everyThingDefaultSize)
+            emit(Resource.success(data = result))
+            result.articles.let { db.newsDao().insertAllArticles(it) }
+        } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error"))
+        }
+    }
+
+    fun deleteAllArticles() {
+        CoroutineScope(Dispatchers.IO).launch {
+            db.newsDao().deleteAllArticles()
+        }
+    }
+
+    fun deleteFavoriteArticle(article: Article) {
+        CoroutineScope(Dispatchers.IO).launch {
+            db.newsDao().deleteFavoriteArticle(article)
+            article.isFavorite = false
         }
     }
 }

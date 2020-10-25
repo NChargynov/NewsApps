@@ -13,6 +13,10 @@ import com.example.newsapps.ui.details.DetailsActivity
 import com.example.newsapps.ui.news.NewsViewModel
 import com.example.newsapps.ui.news.adapter.NewsAdapter
 import kotlinx.android.synthetic.main.fragment_everything.*
+import kotlinx.android.synthetic.main.fragment_everything.progressCircular
+import kotlinx.android.synthetic.main.fragment_everything.recycler_view
+import kotlinx.android.synthetic.main.fragment_everything.swipeUp
+import kotlinx.android.synthetic.main.fragment_topheadlines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everything), NewsAdapter.OnItemClick {
@@ -35,6 +39,7 @@ class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everyth
     override fun setUpListeners() {
         editTextListener()
         nestedScrollListener()
+        swipeListener()
     }
 
     private fun nestedScrollListener() {
@@ -74,18 +79,27 @@ class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everyth
         }
     }
 
+    private fun swipeListener(){
+        swipeUp.setOnRefreshListener {
+            list.clear()
+            subscribeToEverything(bitcoin)
+            showToast(context!!, "Данные успешно обновлены")
+            swipeUp.isRefreshing = false
+        }
+    }
+
     private fun initialization() {
         list = mutableListOf()
         newsAdapter = NewsAdapter(list, this)
     }
 
     private fun subscribeToEverything(query: String) {
+        viewModel.deleteAllArticles()
         viewModel.getEverything(query).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     setTable(it.data!!.articles)
                     showToast(context!!, getString(R.string.news_success))
-                    progressVisibilityGone()
                 }
             }
         })
@@ -94,10 +108,10 @@ class EverythingFragment : BaseFragment<NewsViewModel>(R.layout.fragment_everyth
     private fun setTable(it: MutableList<Article>) {
         list.addAll(it)
         newsAdapter.notifyDataSetChanged()
+        progressVisibilityGone()
     }
 
     private fun progressVisibilityGone() {
-        progressBarDown.visibility = View.GONE
         progressCircular.visibility = View.GONE
 
     }

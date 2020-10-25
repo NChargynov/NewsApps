@@ -22,6 +22,13 @@
                 android:layout_height="250dp"
                 android:src="@drawable/news_log_splash" />
 
+            <ImageButton
+                android:id="@+id/imageFavorite"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_fav_like"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
             <TextView
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"

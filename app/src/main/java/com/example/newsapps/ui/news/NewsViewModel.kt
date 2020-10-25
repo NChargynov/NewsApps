@@ -18,6 +18,7 @@ class NewsViewModel(private val newsRepository: NewsRepository) : BaseViewModel(
     init {
         getEverything("bitcoin")
         getNewsTopHeadlines()
+        getAllArticles()
     }
 
     fun getEverything(query: String): LiveData<Resource<ResponseBody>> {
@@ -30,7 +31,11 @@ class NewsViewModel(private val newsRepository: NewsRepository) : BaseViewModel(
         return newsRepository.getNewsTopHeadlines(page)
     }
 
-    fun insertFavoriteNew(article: Article){
-        newsRepository.insertFavoriteArticle(article)
+    fun deleteAllArticles(){
+        newsRepository.deleteAllArticles()
+    }
+
+    fun getAllArticles(): LiveData<MutableList<Article>>{
+        return newsRepository.getAllArticles()
     }
 }
